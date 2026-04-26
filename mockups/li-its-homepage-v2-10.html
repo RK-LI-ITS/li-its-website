@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&I IT-Solutions — ISO-zertifizierte KI-Entwicklung (v2.10)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Single-green palette, inspired by logo */
+    --green-900: #0A2E1D;
+    --green-800: #0E4D30;       /* Dark — matches refreshed logo forest piece */
+    --green-700: #155A3D;
+    --green-600: #1F7A45;       /* Primary — shield shade */
+    --green-500: #2F9E54;       /* Matches refreshed logo primary green */
+    --green-400: #3FAE6B;       /* Accent / bright */
+    --green-100: #E8F3EC;
+    --cream: #FAFAF6;
+    --cream-dim: #F2F1EA;
+    --cream-warm: #EDEBDF;
+    --ink: #0B0F0D;
+    --ink-soft: #3A403D;
+    --ink-muted: #6B716E;
+    --border: rgba(11, 15, 13, 0.08);
+    --border-strong: rgba(11, 15, 13, 0.16);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Geist', -apple-system, sans-serif;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01";
+    overflow-x: hidden;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 720px) { .container { padding: 0 20px; } }
+
+  /* ═══════════════════════════════════════════
+     STAGED INTRO ANIMATION
+     ═══════════════════════════════════════════ */
+
+  /* Intro overlay — full viewport cover */
+  .intro-stage {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+  }
+  .intro-stage.dismissed {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Stage content — the thing that moves */
+  .intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    max-width: 900px;
+    padding: 0 32px;
+    text-align: center;
+  }
+
+  /* Logo in the intro */
+  .intro-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    animation: logo-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+  }
+  @keyframes logo-in {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+100% { transform: translateX(100%); }
+  }
+
+  .intro-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    opacity: 0;
+    animation: fade-up 0.8s ease 0.8s forwards;
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 0.7; transform: translateY(0); }
+  }
+
+  /* Headline beats */
+  .intro-headline {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(38px, 6vw, 68px);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.02;
+    color: var(--ink);
+    max-width: 880px;
+    opacity: 0;
+    margin-top: 16px;
+  }
+  .intro-headline .serif,
+  .intro-headline .italic {
+    font-style: italic;
+    color: var(--green-700);
+  }
+  .intro-headline .highlight {
+    color: var(--green-700);
+    font-weight: 500;
+  }
+
+  .intro-headline-1 {
+    animation: headline-reveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 2.2s forwards;
+  }
+  .intro-headline-2 {
+    animation: headline-reveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 4.2s forwards;
+  }
+
+  @keyframes headline-reveal {
+    0% { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  .intro-hint {
+    position: absolute;
+    bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fade-up 0.6s ease 6s forwards;
+    cursor: pointer;
+  }
+  .intro-hint::before {
+    content: "↓";
+    display: inline-block;
+    margin-right: 10px;
+    animation: bob 1.6s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+
+  /* When intro is dismissed, animate the body in */
+  body.intro-done .hero-inner {
+    animation: hero-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+  }
+  @keyframes hero-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Reduced motion fallback */
+  @media (prefers-reduced-motion: reduce) {
+    .intro-stage { display: none; }
+    .intro-logo, .intro-headline, .intro-tagline, .intro-hint,
+    .hero-inner { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
+  /* ═══════════════════════════════════════════
+     MAIN SITE
+     ═══════════════════════════════════════════ */
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250, 250, 246, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    max-width: 1280px; margin: 0 auto;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 18px; letter-spacing: -0.02em;
+    color: var(--green-800);
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--green-700);
+    color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    border-radius: 6px;
+    letter-spacing: -0.02em;
+  }
+  nav ul { display: flex; gap: 32px; list-style: none; }
+  nav ul a {
+    color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--green-700); }
+  .nav-cta {
+    background: var(--green-700); color: var(--cream);
+    padding: 10px 18px; border-radius: 6px;
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--green-800); }
+  @media (max-width: 900px) { nav ul, .nav-cta { display: none; } }
+
+  /* HERO */
+  .hero {
+    padding: 72px 0 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; top: 0; right: 0; width: 55%; height: 100%;
+    background:
+      radial-gradient(circle at 70% 40%, rgba(63, 174, 107, 0.08), transparent 60%),
+      radial-gradient(circle at 90% 80%, rgba(14, 61, 46, 0.06), transparent 50%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.25fr 1fr; gap: 80px;
+    align-items: center;
+    position: relative;
+  }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green-700);
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green-500);
+    box-shadow: 0 0 0 4px rgba(63, 174, 107, 0.2);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(63, 174, 107, 0.2); }
+    50% { box-shadow: 0 0 0 6px rgba(63, 174, 107, 0.05); }
+  }
+
+  h1.hero-title {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(40px, 5.2vw, 64px);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+  h1.hero-title .italic {
+    font-style: italic;
+    color: var(--green-700);
+  }
+  h1.hero-title .serif {
+    font-style: italic;
+    color: var(--green-700);
+  }
+  h1.hero-title .highlight {
+    color: var(--green-700);
+  }
+
+  .hero-sub {
+    font-size: 17px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 22px;
+    font-size: 15px; font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--green-700); color: var(--cream);
+  }
+  .btn-primary:hover { background: var(--green-800); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    border-color: var(--border-strong);
+  }
+  .btn-ghost:hover { border-color: var(--green-700); color: var(--green-700); }
+  .btn-green-light {
+    background: var(--green-400); color: var(--green-900);
+  }
+  .btn-green-light:hover { background: var(--green-500); color: var(--cream); transform: translateY(-1px); }
+  .btn .arrow { transition: transform 0.2s; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  /* Hero card */
+  .hero-card {
+    background: var(--green-800);
+    border-radius: 16px;
+    padding: 32px;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: "";
+    position: absolute; top: -40%; right: -20%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(63, 174, 107, 0.2), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    color: var(--green-400);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+    position: relative;
+  }
+  .hero-card-label::before {
+    content: ""; width: 8px; height: 8px;
+    background: var(--green-400); border-radius: 50%;
+  }
+  .hero-card h3 {
+    font-size: 22px; font-weight: 500;
+    margin-bottom: 24px; letter-spacing: -0.02em;
+    line-height: 1.3;
+    position: relative;
+  }
+  .hero-card-stack {
+    display: flex; flex-direction: column; gap: 0;
+    position: relative;
+  }
+  .stack-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0;
+    border-top: 1px solid rgba(250, 250, 246, 0.12);
+    font-size: 14px;
+  }
+  .stack-row:first-child { border-top: none; }
+  .stack-row .label { color: rgba(250, 250, 246, 0.6); }
+  .stack-row .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--green-400);
+  }
+
+  /* TRUST STRIP */
+  .trust-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+    background: var(--cream-dim);
+  }
+  .trust-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .trust-label {
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-muted); font-weight: 500;
+  }
+  .trust-items {
+    display: flex; gap: 32px; flex-wrap: wrap; align-items: center;
+  }
+  .trust-item {
+    font-size: 13px; font-weight: 500; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .trust-item::before {
+    content: "✓"; color: var(--green-600);
+    font-weight: 600;
+  }
+
+  section { padding: 110px 0; }
+  .section-head { max-width: 720px; margin-bottom: 64px; }
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.12em;
+    color: var(--green-700); text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-eyebrow::before {
+    content: ""; width: 28px; height: 2px; background: var(--green-700);
+  }
+  .section-title {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .section-title .italic {
+    font-style: italic;
+    color: var(--green-700);
+  }
+  .section-title .serif {
+    font-style: italic;
+    color: var(--green-700);
+  }
+  .section-sub {
+    font-size: 17px; color: var(--ink-soft);
+    line-height: 1.65;
+    max-width: 620px;
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; } }
+  .service-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px 32px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card:hover {
+    border-color: var(--green-700);
+    transform: translateY(-2px);
+  }
+  .service-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em;
+    color: var(--green-700);
+    margin-bottom: 28px;
+  }
+  .service-card h3 {
+    font-size: 24px; font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    line-height: 1.25;
+  }
+  .service-card p {
+    color: var(--ink-soft); font-size: 15px;
+    line-height: 1.6; margin-bottom: 28px;
+  }
+  .service-meta {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    padding-top: 24px;
+    border-top: 1px dashed var(--border-strong);
+  }
+  .service-meta span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--ink-muted);
+  }
+  .service-link {
+    position: absolute; bottom: 28px; right: 28px;
+    width: 40px; height: 40px;
+    background: var(--cream-dim); color: var(--ink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translate(-8px, 0);
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .service-card:hover .service-link {
+    opacity: 1; transform: translate(0, 0);
+    background: var(--green-400); color: var(--green-900);
+  }
+
+  /* KI-PROJEKTE */
+  .ki-section {
+    background: var(--green-900);
+    color: var(--cream);
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .ki-section::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green-400), transparent);
+    opacity: 0.4;
+  }
+  .ki-section .section-eyebrow { color: var(--green-400); }
+  .ki-section .section-eyebrow::before { background: var(--green-400); }
+  .ki-section .section-title { color: var(--cream); }
+  .ki-section .section-title .serif { color: var(--green-400); }
+  .ki-section .section-sub { color: rgba(250, 250, 246, 0.7); }
+
+  .ki-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px; margin-bottom: 72px;
+    padding: 40px 0; border-top: 1px solid rgba(250, 250, 246, 0.12);
+    border-bottom: 1px solid rgba(250, 250, 246, 0.12);
+  }
+  @media (max-width: 720px) { .ki-stats { grid-template-columns: 1fr; } }
+  .ki-stat .num {
+    font-size: 64px; font-weight: 400;
+    letter-spacing: -0.035em;
+    color: var(--green-400);
+    line-height: 1;
+    margin-bottom: 10px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
+  }
+  .ki-stat .label {
+    font-size: 14px; color: rgba(250, 250, 246, 0.7);
+    line-height: 1.45;
+  }
+
+  .ki-categories {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 720px) { .ki-categories { grid-template-columns: 1fr; } }
+  .ki-cat {
+    padding: 28px;
+    background: rgba(250, 250, 246, 0.03);
+    border: 1px solid rgba(250, 250, 246, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .ki-cat:hover {
+    background: rgba(63, 174, 107, 0.06);
+    border-color: rgba(63, 174, 107, 0.3);
+    transform: translateY(-2px);
+  }
+  .ki-cat-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .ki-cat h4 {
+    font-size: 18px; font-weight: 500; color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  .ki-cat-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--green-400);
+  }
+  .ki-cat p {
+    font-size: 14px; color: rgba(250, 250, 246, 0.65);
+    line-height: 1.55;
+  }
+  .ki-cta-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(250, 250, 246, 0.12);
+    flex-wrap: wrap; gap: 24px;
+  }
+  .ki-cta-note {
+    font-size: 14px; color: rgba(250, 250, 246, 0.6);
+    max-width: 500px;
+  }
+
+  /* PRODUCTS */
+  .products-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+  }
+  @media (max-width: 900px) { .products-grid { grid-template-columns: 1fr; } }
+  .product-card {
+    padding: 40px;
+    background: var(--cream-dim);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    min-height: 280px;
+  }
+  .product-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em;
+    color: var(--green-700);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .product-card h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 72;
+    font-size: 34px; font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+  .product-card p {
+    color: var(--ink-soft); font-size: 15px; line-height: 1.6;
+    margin-bottom: auto;
+  }
+  .product-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 28px; padding-top: 24px;
+    border-top: 1px solid var(--border-strong);
+  }
+  .product-sector {
+    font-size: 13px; color: var(--ink-muted);
+  }
+  .product-arrow {
+    width: 36px; height: 36px;
+    background: var(--ink); color: var(--cream);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .product-card:hover .product-arrow {
+    background: var(--green-400); color: var(--green-900);
+    transform: rotate(-45deg);
+  }
+
+  /* TRUST SECTION */
+  .trust-section { background: var(--cream-dim); }
+  .trust-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .trust-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .cert-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px;
+  }
+  .cert-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px;
+    background: var(--green-700); color: var(--cream);
+    border-radius: 30px;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.03em;
+    margin-bottom: 24px;
+  }
+  .cert-badge::before {
+    content: ""; width: 8px; height: 8px;
+    background: var(--green-400); border-radius: 50%;
+  }
+  .cert-card h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 20;
+    font-size: 26px; font-weight: 400;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .cert-card p {
+    color: var(--ink-soft); font-size: 14px;
+    line-height: 1.6; margin-bottom: 24px;
+  }
+  .cert-list {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .cert-item {
+    display: flex; justify-content: space-between;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .cert-item:first-child { border-top: none; padding-top: 0; }
+  .cert-item .name { color: var(--ink); font-weight: 500; }
+  .cert-item .status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--green-700);
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 120px 0;
+    background: var(--ink);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: "";
+    position: absolute; top: 50%; left: 50%;
+    width: 600px; height: 600px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(63, 174, 107, 0.1), transparent 60%);
+    pointer-events: none;
+  }
+  .cta-inner {
+    max-width: 760px; margin: 0 auto; text-align: center;
+    position: relative;
+  }
+  .cta-inner h2 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(40px, 5.5vw, 64px);
+    font-weight: 400; letter-spacing: -0.025em;
+    line-height: 1.02;
+    margin-bottom: 24px;
+  }
+  .cta-inner h2 .italic {
+    font-style: italic;
+    color: var(--green-400);
+  }
+  .cta-inner h2 .serif {
+    font-style: italic;
+    color: var(--green-400);
+  }
+  .cta-inner p {
+    font-size: 18px; color: rgba(250, 250, 246, 0.7);
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 0 40px;
+    background: var(--green-900);
+    color: rgba(250, 250, 246, 0.6);
+    font-size: 14px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+  @media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  .footer-brand { font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 20; color: var(--cream); margin-bottom: 12px; font-weight: 400; font-size: 22px; letter-spacing: -0.015em; line-height: 1; }
+  .footer-desc { max-width: 320px; line-height: 1.6; }
+  .footer-col h5 {
+    color: var(--cream); font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 18px; font-weight: 500;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a { color: rgba(250, 250, 246, 0.6); text-decoration: none; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--green-400); }
+  .footer-bottom {
+    padding-top: 32px; border-top: 1px solid rgba(250, 250, 246, 0.1);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px;
+  }
+
+  /* Demo controls — visible only for presenting */
+  .demo-controls {
+    position: fixed; bottom: 20px; right: 20px;
+    z-index: 10000;
+    display: flex; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .demo-btn {
+    background: var(--ink); color: var(--cream);
+    padding: 8px 12px; border-radius: 6px;
+    border: none; cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+  .demo-btn:hover { background: var(--green-700); }
+
+  /* Logo — inline SVG shield + typographic wordmark */
+  .shield-mark {
+    width: 34px; height: 34px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .shield-mark svg { width: 100%; height: 100%; display: block; }
+  .logo-word {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 20;
+    font-size: 23px; font-weight: 400;
+    color: var(--green-800);
+    letter-spacing: -0.015em;
+    display: flex; gap: 8px;
+    line-height: 1;
+  }
+  .logo-word-light {
+    font-weight: 400;
+    color: var(--green-700);
+    font-style: italic;
+  }
+
+  /* Intro logo — big shield + wordmark */
+  .intro-logo {
+    display: flex; align-items: center; gap: 24px;
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    animation: logo-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+  }
+  .intro-shield {
+    width: 92px; height: 92px;
+    display: inline-flex;
+    filter: drop-shadow(0 8px 24px rgba(6, 115, 53, 0.2));
+  }
+  .intro-shield svg { width: 100%; height: 100%; display: block; }
+  .intro-logo-text { text-align: left; }
+  .intro-logo-word {
+    font-family: 'Newsreader', Georgia, serif;
+    font-variation-settings: "opsz" 20;
+    font-size: 52px; font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--green-800);
+    line-height: 1;
+  }
+  .intro-logo-word .amp {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--green-600);
+  }
+  @media (max-width: 640px) {
+    .shield-mark { width: 28px; height: 28px; }
+    .logo-word { font-size: 15px; }
+    .intro-logo { gap: 16px; flex-direction: column; text-align: center; }
+    .intro-shield { width: 72px; height: 72px; }
+    .intro-logo-word { font-size: 32px; text-align: center; }
+  }
+
+
+  /* ═══ NEURAL NETWORK HOVER CANVAS ═══ */
+  .effect-canvas {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  .service-card:hover .effect-canvas,
+  .ki-cat:hover .effect-canvas { opacity: 1; }
+
+  /* Make sure service card content sits above canvas */
+  .service-card { position: relative; overflow: hidden; }
+  .service-card .service-num,
+  .service-card h3,
+  .service-card p,
+  .service-card .service-meta,
+  .service-card .service-link { position: relative; z-index: 2; }
+
+  /* Same for KI domain cards */
+  .ki-cat { position: relative; overflow: hidden; }
+  .ki-cat .ki-cat-head,
+  .ki-cat p { position: relative; z-index: 2; }
+
+  /* ═══ HERO DATA-LINE (subtle pulsing line at top of hero) ═══ */
+
+
+  
+
+
+
+  /* ═══ SCROLL REVEAL ═══ */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .scroll-reveal.is-visible {
+    opacity: 1; transform: translateY(0);
+  }
+  .scroll-reveal.delay-1 { transition-delay: 0.1s; }
+  .scroll-reveal.delay-2 { transition-delay: 0.2s; }
+  .scroll-reveal.delay-3 { transition-delay: 0.3s; }
+  .scroll-reveal.delay-4 { transition-delay: 0.4s; }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* ═══ HERO ANIMATED BLOB BACKGROUND ═══ */
+  .hero-blobs {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    will-change: transform;
+  }
+  .hero-blob.b1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle at 30% 30%, var(--green-400), transparent 65%);
+    top: -120px; left: -80px;
+    animation: blob-drift-1 22s ease-in-out infinite;
+  }
+  .hero-blob.b2 {
+    width: 620px; height: 620px;
+    background: radial-gradient(circle at 70% 70%, var(--green-500), transparent 60%);
+    top: 10%; right: -100px;
+    animation: blob-drift-2 28s ease-in-out infinite;
+    opacity: 0.45;
+  }
+  .hero-blob.b3 {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle at 50% 50%, var(--green-600), transparent 65%);
+    bottom: -80px; left: 35%;
+    animation: blob-drift-3 32s ease-in-out infinite;
+    opacity: 0.3;
+  }
+  .hero-blob.b4 {
+    width: 340px; height: 340px;
+    background: radial-gradient(circle at 50% 50%, var(--green-700), transparent 65%);
+    top: 30%; left: 55%;
+    animation: blob-drift-4 26s ease-in-out infinite;
+    opacity: 0.25;
+  }
+  @keyframes blob-drift-1 {
+    0%, 100%   { transform: translate(0, 0) scale(1); }
+    25%        { transform: translate(80px, 40px) scale(1.08); }
+    50%        { transform: translate(40px, 100px) scale(0.95); }
+    75%        { transform: translate(-30px, 60px) scale(1.05); }
+  }
+  @keyframes blob-drift-2 {
+    0%, 100%   { transform: translate(0, 0) scale(1); }
+    33%        { transform: translate(-60px, 50px) scale(0.92); }
+    66%        { transform: translate(-20px, 120px) scale(1.1); }
+  }
+  @keyframes blob-drift-3 {
+    0%, 100%   { transform: translate(0, 0) scale(1); }
+    50%        { transform: translate(-100px, -60px) scale(1.15); }
+  }
+  @keyframes blob-drift-4 {
+    0%, 100%   { transform: translate(0, 0) scale(1); }
+    40%        { transform: translate(50px, -80px) scale(1.1); }
+    70%        { transform: translate(-40px, 40px) scale(0.9); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-blob { animation: none !important; opacity: 0.25 !important; }
+  }
+
+  /* Ensure hero content sits above blobs */
+  .hero .container { position: relative; z-index: 2; }
+
+  /* Subtle soft grain over the blobs so they don't read as "flat" gradient */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(11, 15, 13, 0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══ STAGED INTRO ═══ -->
+<div class="intro-stage" id="intro">
+  <div class="intro-content">
+    <div class="intro-logo">
+      <span class="intro-shield"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 135.467 135.467" width="100%" height="100%" aria-label="L&amp;I Logo">
+<g transform="translate(-29.143126,-28.633801)">
+<path fill="#0E4D30" d="m 147.7193,33.086127 c -0.12936,0.485332 -7.69157,29.346127 -24.59628,49.894877 0,0 0.0182,0.0027 0.0182,0.0027 5.39367,4.292804 6.80748,11.977438 3.05754,17.788975 -5.23927,7.98276 -13.75796,0.37552 -13.41094,-6.808238 -0.03,-0.255687 -0.081,-0.478661 -0.11623,-0.642926 -4.85649,3.901151 -10.30544,6.907904 -16.335263,8.544924 -2.506597,6.00857 -4.249234,11.86458 -5.160295,17.57025 -0.45045,0.0733 -0.9085,-0.14221 -1.491546,-0.63585 -4.648836,-5.4857 -16.04031,-5.14757 -14.420617,4.26394 1.266731,7.03297 8.017494,11.79693 15.159037,10.86154 0.02467,10.05418 2.206439,19.07472 5.607647,27.93039 9.185707,-3.24537 19.529957,-9.60381 26.082777,-14.88727 0.41508,-0.33469 0.80098,-0.71114 1.22903,-1.04151 8.57563,-6.61915 14.71388,-17.79335 18.11549,-30.45807 4.06575,-15.13762 4.28971,-30.361052 4.94223,-41.40613 0.12052,-2.036861 0.18716,-2.91447 0.22336,-4.58413 0.28932,-12.567555 0.80649,-23.825823 1.09581,-36.393378 1e-5,-3.2e-5 3e-5,-6.4e-5 5e-5,-9.5e-5 z"/>
+<path fill="#C7E8CB" d="m 44.061295,33.187234 c -0.03914,-0.128724 1.149179,35.191028 1.167129,36.37324 0.03955,1.668725 0.108454,2.545376 0.232807,4.580967 0.674182,11.038128 0.927781,26.252939 5.02324,41.374809 3.426437,12.65153 9.586334,23.80876 18.174976,30.40769 0.428694,0.32935 0.815025,0.70452 1.230755,1.03822 6.5632,5.26791 16.949853,11.66922 26.141961,14.89488 -3.213405,-9.11069 -5.331442,-18.40021 -5.603822,-28.00325 -7.126099,0.97946 -13.858455,-3.7619 -15.13306,-10.8349 -1.6197,-9.4067 9.795801,-9.66728 14.444641,-4.18438 0.547898,0.46367 1.043809,0.62474 1.513109,0.58999 0.951845,-5.7085 2.60467,-11.58101 5.114158,-17.59341 C 91.467351,99.370188 87.113132,96.8696 83.2306,94.334721 83.021388,94.144764 82.812176,93.954807 82.602964,93.76485 81.167769,92.422692 80.734451,91.156827 82.309696,90.193949 88.976162,87.504714 92.317914,76.586179 82.879004,75.166228 76.934888,74.319244 71.33797,77.599919 68.879358,82.873328 52.719754,66.891669 50.029287,49.920268 44.061295,33.187234 Z"/>
+<path fill="#2F9E54" d="m 147.75032,33.085476 c -0.12937,0.485139 -7.62673,29.362452 -24.57808,49.854713 5.44146,4.227733 6.83196,11.948187 3.05714,17.795041 -5.23929,7.97828 -13.79889,0.38918 -13.45185,-6.790587 -0.0275,-0.233681 -0.0318,-0.454212 -0.1391,-0.574698 -4.90051,3.876018 -10.30083,6.838045 -16.271268,8.458075 -4.831469,-2.426473 -9.13244,-4.891504 -12.919751,-7.350168 -2.048929,-1.576368 -3.006043,-3.144505 -1.137758,-4.286448 6.66648,-2.689127 10.008233,-13.607158 0.569321,-15.027059 C 76.95754,74.32063 71.380637,77.572953 68.917761,82.865173 52.725136,66.924315 50.035272,49.936358 44.061246,33.187231 c 0.459996,0.04058 14.542225,9.053721 51.854915,10.49138 37.309749,-1.510893 51.374289,-10.551654 51.834199,-10.593138 0,3e-6 0,5e-6 -1e-5,8e-6"/>
+<path fill="#0A2E1D" d="m 96.04798,161.86251 c 0.572901,0.42968 21.50148,-7.72311 32.2632,-19.77921 10.76338,-12.05798 13.99924,-29.25424 13.99924,-29.25424 0.47049,-1.85599 1.77668,-8.41713 2.01556,-10.6252 0.0186,-0.17226 0.0496,-0.34414 0.0741,-0.51787 0.5,-3.524004 0.96572,-7.496383 1.23597,-11.366047 0.0433,-0.619633 0.10175,-1.211329 0.13272,-1.771266 l 0.1813,-3.274295 c -6.18714,24.209938 -17.72773,55.259638 -53.441918,63.455358 -0.09625,0.16857 0.799005,5.13149 3.539785,13.13277"/>
+</g>
+</svg></span>
+      <div class="intro-logo-text">
+        <div class="intro-logo-word">L<span class="amp">&amp;</span>I IT-Solutions</div>
+      </div>
+    </div>
+    <div class="intro-tagline">Systemhaus · Softwareentwicklung · KI-Projekte</div>
+    <h1 class="intro-headline intro-headline-1">
+      KI-Entwicklung für <span class="highlight">regulierte Branchen</span>
+    </h1>
+    <h1 class="intro-headline intro-headline-2">
+      mit dem <span class="serif">Sicherheitsstandard</span>,<br>den Ihre Branche verlangt.
+    </h1>
+  </div>
+  <div class="intro-hint" id="introHint">Klicken, um fortzufahren</div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="inner">
+    <a href="#" class="logo">
+      <span class="shield-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 135.467 135.467" width="100%" height="100%" aria-label="L&amp;I Logo">
+<g transform="translate(-29.143126,-28.633801)">
+<path fill="#0E4D30" d="m 147.7193,33.086127 c -0.12936,0.485332 -7.69157,29.346127 -24.59628,49.894877 0,0 0.0182,0.0027 0.0182,0.0027 5.39367,4.292804 6.80748,11.977438 3.05754,17.788975 -5.23927,7.98276 -13.75796,0.37552 -13.41094,-6.808238 -0.03,-0.255687 -0.081,-0.478661 -0.11623,-0.642926 -4.85649,3.901151 -10.30544,6.907904 -16.335263,8.544924 -2.506597,6.00857 -4.249234,11.86458 -5.160295,17.57025 -0.45045,0.0733 -0.9085,-0.14221 -1.491546,-0.63585 -4.648836,-5.4857 -16.04031,-5.14757 -14.420617,4.26394 1.266731,7.03297 8.017494,11.79693 15.159037,10.86154 0.02467,10.05418 2.206439,19.07472 5.607647,27.93039 9.185707,-3.24537 19.529957,-9.60381 26.082777,-14.88727 0.41508,-0.33469 0.80098,-0.71114 1.22903,-1.04151 8.57563,-6.61915 14.71388,-17.79335 18.11549,-30.45807 4.06575,-15.13762 4.28971,-30.361052 4.94223,-41.40613 0.12052,-2.036861 0.18716,-2.91447 0.22336,-4.58413 0.28932,-12.567555 0.80649,-23.825823 1.09581,-36.393378 1e-5,-3.2e-5 3e-5,-6.4e-5 5e-5,-9.5e-5 z"/>
+<path fill="#C7E8CB" d="m 44.061295,33.187234 c -0.03914,-0.128724 1.149179,35.191028 1.167129,36.37324 0.03955,1.668725 0.108454,2.545376 0.232807,4.580967 0.674182,11.038128 0.927781,26.252939 5.02324,41.374809 3.426437,12.65153 9.586334,23.80876 18.174976,30.40769 0.428694,0.32935 0.815025,0.70452 1.230755,1.03822 6.5632,5.26791 16.949853,11.66922 26.141961,14.89488 -3.213405,-9.11069 -5.331442,-18.40021 -5.603822,-28.00325 -7.126099,0.97946 -13.858455,-3.7619 -15.13306,-10.8349 -1.6197,-9.4067 9.795801,-9.66728 14.444641,-4.18438 0.547898,0.46367 1.043809,0.62474 1.513109,0.58999 0.951845,-5.7085 2.60467,-11.58101 5.114158,-17.59341 C 91.467351,99.370188 87.113132,96.8696 83.2306,94.334721 83.021388,94.144764 82.812176,93.954807 82.602964,93.76485 81.167769,92.422692 80.734451,91.156827 82.309696,90.193949 88.976162,87.504714 92.317914,76.586179 82.879004,75.166228 76.934888,74.319244 71.33797,77.599919 68.879358,82.873328 52.719754,66.891669 50.029287,49.920268 44.061295,33.187234 Z"/>
+<path fill="#2F9E54" d="m 147.75032,33.085476 c -0.12937,0.485139 -7.62673,29.362452 -24.57808,49.854713 5.44146,4.227733 6.83196,11.948187 3.05714,17.795041 -5.23929,7.97828 -13.79889,0.38918 -13.45185,-6.790587 -0.0275,-0.233681 -0.0318,-0.454212 -0.1391,-0.574698 -4.90051,3.876018 -10.30083,6.838045 -16.271268,8.458075 -4.831469,-2.426473 -9.13244,-4.891504 -12.919751,-7.350168 -2.048929,-1.576368 -3.006043,-3.144505 -1.137758,-4.286448 6.66648,-2.689127 10.008233,-13.607158 0.569321,-15.027059 C 76.95754,74.32063 71.380637,77.572953 68.917761,82.865173 52.725136,66.924315 50.035272,49.936358 44.061246,33.187231 c 0.459996,0.04058 14.542225,9.053721 51.854915,10.49138 37.309749,-1.510893 51.374289,-10.551654 51.834199,-10.593138 0,3e-6 0,5e-6 -1e-5,8e-6"/>
+<path fill="#0A2E1D" d="m 96.04798,161.86251 c 0.572901,0.42968 21.50148,-7.72311 32.2632,-19.77921 10.76338,-12.05798 13.99924,-29.25424 13.99924,-29.25424 0.47049,-1.85599 1.77668,-8.41713 2.01556,-10.6252 0.0186,-0.17226 0.0496,-0.34414 0.0741,-0.51787 0.5,-3.524004 0.96572,-7.496383 1.23597,-11.366047 0.0433,-0.619633 0.10175,-1.211329 0.13272,-1.771266 l 0.1813,-3.274295 c -6.18714,24.209938 -17.72773,55.259638 -53.441918,63.455358 -0.09625,0.16857 0.799005,5.13149 3.539785,13.13277"/>
+</g>
+</svg></span>
+      <span class="logo-word">L&amp;I <span class="logo-word-light">IT-Solutions</span></span>
+    </a>
+    <ul>
+      <li><a href="#leistungen">Leistungen</a></li>
+      <li><a href="#ki">KI-Projekte</a></li>
+      <li><a href="#produkte">Produkte</a></li>
+      <li><a href="#trust">Sicherheit</a></li>
+      <li><a href="#unternehmen">Unternehmen</a></li>
+    </ul>
+    <a href="#kontakt" class="nav-cta">Kontakt aufnehmen</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <!-- hero-dataline removed per user request: felt like a loading bar -->
+    <div class="hero-blobs" aria-hidden="true">
+      <div class="hero-blob b1"></div>
+      <div class="hero-blob b2"></div>
+      <div class="hero-blob b3"></div>
+      <div class="hero-blob b4"></div>
+    </div>
+    <div class="container">
+    <div class="hero-grid hero-inner">
+      <div>
+        <div class="eyebrow"><span class="dot"></span>ISO 27001:2022 zertifiziert · BSI Allianz für Cyber-Sicherheit</div>
+        <h1 class="hero-title">
+          KI-Entwicklung für <span class="highlight">regulierte Branchen</span> — mit dem Sicherheits&shy;standard, den <span class="italic">Ihre Branche</span> verlangt.
+        </h1>
+        <p class="hero-sub">
+          L&amp;I entwickelt moderne KI-Anwendungen und betreibt Ihre IT-Infrastruktur — nach ISO 27001, gehostet im eigenen Rechenzentrum in München. Systemhaus, Entwicklungspartner und KI-Spezialist in einem.
+        </p>
+        <div class="hero-ctas">
+          <a href="#ki" class="btn btn-primary">KI-Projekte ansehen <span class="arrow">→</span></a>
+          <a href="#kontakt" class="btn btn-ghost">Erstgespräch vereinbaren</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-label">L&amp;I Stack</div>
+        <h3>Compliance-grade AI, end-to-end.</h3>
+        <div class="hero-card-stack">
+          <div class="stack-row">
+            <span class="label">Entwicklung</span>
+            <span class="value">ISO 27001:2022</span>
+          </div>
+          <div class="stack-row">
+            <span class="label">Hosting</span>
+            <span class="value">Eigenes RZ München</span>
+          </div>
+          <div class="stack-row">
+            <span class="label">KI-Modelle</span>
+            <span class="value">Lokal · Hybrid · Cloud</span>
+          </div>
+          <div class="stack-row">
+            <span class="label">Datenschutz</span>
+            <span class="value">DSGVO + BSI</span>
+          </div>
+          <div class="stack-row">
+            <span class="label">Kundenbasis</span>
+            <span class="value">Banken · Versicherungen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRUST STRIP ═══ -->
+<div class="trust-strip">
+  <div class="container trust-inner">
+    <div class="trust-label">Zertifiziert &amp; Partnerschaften</div>
+    <div class="trust-items">
+      <div class="trust-item">ISO 27001:2022</div>
+      <div class="trust-item">BSI Cyber-Sicherheit</div>
+      <div class="trust-item">Proxmox Reseller</div>
+      <div class="trust-item">Starface Advanced</div>
+      <div class="trust-item">ABBYY Certified</div>
+      <div class="trust-item">GFI Bronze Partner</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="leistungen">
+  <div class="container">
+    <div class="section-head scroll-reveal">
+      <div class="section-eyebrow">01 — Leistungen</div>
+      <h2 class="section-title">Drei Bereiche, <span class="serif">ein Partner.</span></h2>
+      <p class="section-sub">Von der täglichen IT-Betreuung bis zur individuellen Softwareentwicklung — alles aus einer Hand, nach einheitlichen Sicherheitsstandards.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card scroll-reveal delay-1">
+        <canvas class="effect-canvas" data-effect="neural"></canvas>
+        <div class="service-num">01 / Systemintegration</div>
+        <h3>IT-Betrieb &amp; Netzwerk</h3>
+        <p>Von der Printer-Verwaltung bis zum automatisierten Backup: Wir betreuen Ihre komplette IT- und TK-Umgebung — vor Ort und remote.</p>
+        <div class="service-meta">
+          <span>Netzwerk</span>
+          <span>Support</span>
+          <span>Backup</span>
+          <span>Telefonie</span>
+        </div>
+        <a href="#" class="service-link">↗</a>
+      </div>
+      <div class="service-card scroll-reveal delay-2">
+        <canvas class="effect-canvas" data-effect="neural"></canvas>
+        <div class="service-num">02 / Entwicklung</div>
+        <h3>Softwareentwicklung</h3>
+        <p>Maßgeschneiderte Software, wenn Standardlösungen an ihre Grenzen stoßen. Von Projektmanagement bis Softwarearchitektur.</p>
+        <div class="service-meta">
+          <span>Individualsoftware</span>
+          <span>Webentwicklung</span>
+          <span>Architektur</span>
+        </div>
+        <a href="#" class="service-link">↗</a>
+      </div>
+      <div class="service-card scroll-reveal delay-3">
+        <canvas class="effect-canvas" data-effect="neural"></canvas>
+        <div class="service-num">03 / Rechenzentrum</div>
+        <h3>Hosting &amp; Cloud</h3>
+        <p>Eigenes, mehrfach zertifiziertes Rechenzentrum in München. Hochverfügbar, datenschutzkonform, vollständig in deutscher Jurisdiktion.</p>
+        <div class="service-meta">
+          <span>Virtualisierung</span>
+          <span>Cloud</span>
+          <span>Terminal</span>
+          <span>Hosting</span>
+        </div>
+        <a href="#" class="service-link">↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KI-PROJEKTE ═══ -->
+<section class="ki-section" id="ki">
+  <div class="container">
+    <div class="section-head scroll-reveal">
+      <div class="section-eyebrow">02 — KI-Projekte</div>
+      <h2 class="section-title">KI dort, wo sie wirkt — <span class="serif">nicht, wo sie auffällt.</span></h2>
+      <p class="section-sub">Wir setzen Künstliche Intelligenz dort ein, wo sie konkrete Geschäftsprobleme löst. Entwickelt nach ISO 27001, betrieben im eigenen Rechenzentrum. Von der lokalen KI-Inferenz bis zur hybriden Cloud-Integration.</p>
+    </div>
+    <div class="ki-stats scroll-reveal">
+      <div class="ki-stat">
+        <div class="num">50+</div>
+        <div class="label">realisierte KI-Projekte<br>in regulierten Branchen</div>
+      </div>
+      <div class="ki-stat">
+        <div class="num">100%</div>
+        <div class="label">DSGVO-konform<br>in eigener Infrastruktur</div>
+      </div>
+      <div class="ki-stat">
+        <div class="num">ISO</div>
+        <div class="label">27001:2022 —<br>auch für KI-Workloads</div>
+      </div>
+    </div>
+    <div class="ki-categories">
+      <div class="ki-cat scroll-reveal delay-1">
+        <canvas class="effect-canvas" data-effect="neural" data-dark="true"></canvas>
+        <div class="ki-cat-head">
+          <h4>Dokumente &amp; Compliance</h4>
+          <span class="ki-cat-count">12 Projekte</span>
+        </div>
+        <p>Automatisierte Rechnungsprüfung, DSGVO-Verfahrensverzeichnisse, AV-Vertragsanalyse — KI für dokumentenlastige Prozesse.</p>
+      </div>
+      <div class="ki-cat scroll-reveal delay-2">
+        <canvas class="effect-canvas" data-effect="neural" data-dark="true"></canvas>
+        <div class="ki-cat-head">
+          <h4>Vertrieb &amp; Kundenservice</h4>
+          <span class="ki-cat-count">9 Projekte</span>
+        </div>
+        <p>Intelligente Vertriebsassistenten, automatisierte Branchenanalyse, KI-gestützte Angebotserstellung.</p>
+      </div>
+      <div class="ki-cat scroll-reveal delay-3">
+        <canvas class="effect-canvas" data-effect="neural" data-dark="true"></canvas>
+        <div class="ki-cat-head">
+          <h4>Vision &amp; Qualitätssicherung</h4>
+          <span class="ki-cat-count">7 Projekte</span>
+        </div>
+        <p>Schadenserkennung per Foto, CNC-Zeichnungsanalyse, automatische Prüfberichte auf Basis von Computer Vision.</p>
+      </div>
+      <div class="ki-cat scroll-reveal delay-4">
+        <canvas class="effect-canvas" data-effect="neural" data-dark="true"></canvas>
+        <div class="ki-cat-head">
+          <h4>Büro &amp; Automatisierung</h4>
+          <span class="ki-cat-count">14 Projekte</span>
+        </div>
+        <p>Meeting-Transkription, Workflow-Automation, KI-Assistenten für wiederkehrende administrative Prozesse.</p>
+      </div>
+    </div>
+    <div class="ki-cta-row scroll-reveal">
+      <p class="ki-cta-note">
+        Jedes Projekt nach den gleichen Standards entwickelt, die Ihre Regulierung verlangt.
+      </p>
+      <a href="#" class="btn btn-green-light">Alle KI-Projekte ansehen <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section id="produkte">
+  <div class="container">
+    <div class="section-head scroll-reveal">
+      <div class="section-eyebrow">03 — Produkte</div>
+      <h2 class="section-title">Software, die wir <span class="serif">selbst</span> in Betrieb haben.</h2>
+      <p class="section-sub">Spezialisierte Lösungen für Versicherungen, Anwaltskanzleien und den Datenschutz-Alltag — aus eigener Entwicklung.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card scroll-reveal delay-1">
+        <span class="product-tag">Versicherungen · Anwaltskanzleien</span>
+        <h3>INVOICE-Auditor</h3>
+        <p>Automatisierte Prüfung, Bewertung und Kategorisierung von Anwaltsrechnungen. OCR-gestützt, RVG-konform, individuell regelbar. Verfügbar als Inhouse- oder ASP-Lösung.</p>
+        <div class="product-footer">
+          <span class="product-sector">Rechnungsprüfung · OCR · RVG</span>
+          <div class="product-arrow">→</div>
+        </div>
+      </div>
+      <div class="product-card scroll-reveal delay-2">
+        <span class="product-tag">DSGVO · Compliance</span>
+        <h3>Data Agenda Datenschutz Manager</h3>
+        <p>Webbasiertes Management-System für DSGVO-Rechenschaftspflichten. Expertengeprüft in Zusammenarbeit mit der GDD e.V. Mandantenfähig und vollständig in Deutschland gehostet.</p>
+        <div class="product-footer">
+          <span class="product-sector">DSGVO · Löschmanager · Multi-Tenant</span>
+          <div class="product-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRUST / CERTIFICATES ═══ -->
+<section class="trust-section" id="trust">
+  <div class="container">
+    <div class="trust-grid scroll-reveal">
+      <div>
+        <div class="section-eyebrow">04 — Sicherheit</div>
+        <h2 class="section-title">Vertrauen ist gut. <span class="serif">Zertifikate sind besser.</span></h2>
+        <p class="section-sub">Wer KI für Banken und Versicherungen entwickelt, muss mehr vorweisen als gute Absichten. Unsere Zertifizierungen sind seit Jahren unabhängig auditiert.</p>
+        <div style="margin-top: 32px;">
+          <a href="#" class="btn btn-ghost">Alle Zertifikate einsehen <span class="arrow">→</span></a>
+        </div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-badge">Aktiv seit 2022 · Re-zertifiziert 2025</span>
+        <h3>DIN EN ISO/IEC 27001:2022</h3>
+        <p>Die international führende Norm für Informationssicherheits-Management. Zertifiziert durch DEKRA Certification GmbH.</p>
+        <div class="cert-list">
+          <div class="cert-item">
+            <span class="name">BSI Allianz für Cyber-Sicherheit</span>
+            <span class="status">Mitglied</span>
+          </div>
+          <div class="cert-item">
+            <span class="name">Proxmox Authorized Reseller</span>
+            <span class="status">Aktiv</span>
+          </div>
+          <div class="cert-item">
+            <span class="name">Starface Advanced Partner</span>
+            <span class="status">Aktiv</span>
+          </div>
+          <div class="cert-item">
+            <span class="name">ABBYY Certified Partner</span>
+            <span class="status">Aktiv</span>
+          </div>
+          <div class="cert-item">
+            <span class="name">GFI Software Bronze Partner</span>
+            <span class="status">Aktiv</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section" id="kontakt">
+  <div class="container">
+    <div class="cta-inner scroll-reveal">
+      <h2>Lassen Sie uns über <span class="serif">Ihr Projekt</span> sprechen.</h2>
+      <p>Ob laufende IT-Betreuung, individuelle Software oder ein KI-Projekt für Ihre Branche — wir freuen uns auf ein Erstgespräch.</p>
+      <div class="hero-ctas" style="justify-content: center;">
+        <a href="#" class="btn btn-green-light">Termin vereinbaren <span class="arrow">→</span></a>
+        <a href="mailto:" class="btn btn-ghost" style="color: var(--cream); border-color: rgba(250,250,246,0.25);">E-Mail schreiben</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">L&amp;I IT-Solutions GmbH &amp; Co. KG</div>
+        <p class="footer-desc">Systemhaus, Entwicklungspartner und KI-Spezialist aus Weinheim. Mit eigenem Rechenzentrum in München. ISO 27001-zertifiziert.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Leistungen</h5>
+        <ul>
+          <li><a href="#">Systemintegration</a></li>
+          <li><a href="#">Softwareentwicklung</a></li>
+          <li><a href="#">Rechenzentrum</a></li>
+          <li><a href="#">KI-Projekte</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Unternehmen</h5>
+        <ul>
+          <li><a href="#">Über uns</a></li>
+          <li><a href="#">Karriere</a></li>
+          <li><a href="#">Zertifikate</a></li>
+          <li><a href="#">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Rechtliches</h5>
+        <ul>
+          <li><a href="#">Impressum</a></li>
+          <li><a href="#">Datenschutz</a></li>
+          <li><a href="#">AGB</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 L&amp;I IT-Solutions GmbH &amp; Co. KG — Weinheim · München</div>
+      <div>Weiler Nächstenbach 12, 69469 Weinheim</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Demo controls: replay / skip for presenting -->
+<div class="demo-controls">
+  <button class="demo-btn" onclick="replayIntro()">↻ Intro</button>
+  <button class="demo-btn" onclick="skipIntro()">⏭ Skip</button>
+</div>
+
+<script>
+  const intro = document.getElementById('intro');
+  const hint = document.getElementById('introHint');
+  const INTRO_DURATION = 7000; // total sequence
+
+  function dismissIntro() {
+    intro.classList.add('dismissed');
+    document.body.classList.add('intro-done');
+    setTimeout(() => { intro.style.display = 'none'; }, 700);
+  }
+
+  function skipIntro() { dismissIntro(); }
+
+  function replayIntro() {
+    intro.style.display = 'flex';
+    intro.classList.remove('dismissed');
+    document.body.classList.remove('intro-done');
+    // Force animation restart by cloning the intro content
+    const content = intro.querySelector('.intro-content');
+    const clone = content.cloneNode(true);
+    content.replaceWith(clone);
+    hint.style.animation = 'none';
+    void hint.offsetWidth;
+    hint.style.animation = '';
+    // Schedule the auto-dismiss
+    setTimeout(() => {
+      if (!intro.classList.contains('dismissed')) dismissIntro();
+    }, INTRO_DURATION);
+  }
+
+  // Auto-dismiss after full sequence
+  setTimeout(() => {
+    if (!intro.classList.contains('dismissed')) dismissIntro();
+  }, INTRO_DURATION);
+
+  // Allow manual dismiss via click anywhere on overlay (after a short grace period)
+  setTimeout(() => {
+    intro.addEventListener('click', dismissIntro);
+  }, 1500);
+
+  // Respect reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    dismissIntro();
+  }
+
+
+  /* ═══ NEURAL NETWORK HOVER EFFECT ═══ */
+  const NEURAL_COLORS = {
+    lightPrimary: '#1F7A45',
+    lightAccent:  '#2F9E54',
+    darkPrimary:  '#3FAE6B',
+    darkAccent:   '#3FAE6B',
+  };
+
+  class NeuralEffect {
+    constructor(card) {
+      this.card = card;
+      this.canvas = card.querySelector('.effect-canvas');
+      if (!this.canvas) return;
+      this.ctx = this.canvas.getContext('2d');
+      this.dark = this.canvas.dataset.dark === 'true';
+      this.active = false;
+      this.animationId = null;
+      this.mouse = { x: -9999, y: -9999 };
+
+      this.resize();
+      this.initNodes();
+
+      card.addEventListener('mouseenter', () => this.start());
+      card.addEventListener('mouseleave', () => this.stop());
+      card.addEventListener('mousemove', (e) => {
+        const rect = this.canvas.getBoundingClientRect();
+        this.mouse.x = e.clientX - rect.left;
+        this.mouse.y = e.clientY - rect.top;
+      });
+      window.addEventListener('resize', () => this.resize());
+    }
+    resize() {
+      const rect = this.canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      const dpr = window.devicePixelRatio || 1;
+      this.canvas.width = rect.width * dpr;
+      this.canvas.height = rect.height * dpr;
+      this.canvas.style.width = rect.width + 'px';
+      this.canvas.style.height = rect.height + 'px';
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.scale(dpr, dpr);
+      this.w = rect.width;
+      this.h = rect.height;
+      this.initNodes();
+    }
+    initNodes() {
+      if (!this.w || !this.h) return;
+      const count = Math.max(12, Math.floor((this.w * this.h) / 6000));
+      this.nodes = [];
+      for (let i = 0; i < count; i++) {
+        this.nodes.push({
+          x: Math.random() * this.w,
+          y: Math.random() * this.h,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          baseR: 1.2 + Math.random() * 0.8,
+        });
+      }
+    }
+    start() {
+      if (this.active) return;
+      this.active = true;
+      this.resize();
+      this.tick();
+    }
+    stop() {
+      this.active = false;
+      this.mouse.x = -9999;
+      this.mouse.y = -9999;
+      if (this.animationId) cancelAnimationFrame(this.animationId);
+      setTimeout(() => {
+        if (!this.active && this.ctx) this.ctx.clearRect(0, 0, this.w, this.h);
+      }, 500);
+    }
+    tick() {
+      if (!this.active) return;
+      this.draw();
+      this.animationId = requestAnimationFrame(() => this.tick());
+    }
+    draw() {
+      if (!this.ctx || !this.nodes) return;
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, this.w, this.h);
+      const baseColor = this.dark ? NEURAL_COLORS.darkPrimary : NEURAL_COLORS.lightPrimary;
+      const accentColor = this.dark ? NEURAL_COLORS.darkAccent : NEURAL_COLORS.lightAccent;
+      const lineAlpha = this.dark ? 0.35 : 0.22;
+
+      // Update positions
+      for (const n of this.nodes) {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > this.w) n.vx *= -1;
+        if (n.y < 0 || n.y > this.h) n.vy *= -1;
+      }
+
+      // Draw connecting lines
+      for (let i = 0; i < this.nodes.length; i++) {
+        for (let j = i + 1; j < this.nodes.length; j++) {
+          const a = this.nodes[i], b = this.nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 110) {
+            const alpha = (1 - d / 110) * lineAlpha;
+            ctx.strokeStyle = baseColor;
+            ctx.globalAlpha = alpha;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // Draw nodes
+      for (const n of this.nodes) {
+        const dx = n.x - this.mouse.x, dy = n.y - this.mouse.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        const proximity = Math.max(0, 1 - d / 140);
+        const r = n.baseR + proximity * 3;
+        const alpha = this.dark ? 0.55 + proximity * 0.4 : 0.45 + proximity * 0.5;
+        ctx.fillStyle = baseColor;
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (proximity > 0.3) {
+          ctx.strokeStyle = accentColor;
+          ctx.globalAlpha = proximity * 0.4;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r + 6 + proximity * 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // Initialize neural effect on all cards with a canvas
+  document.querySelectorAll('.service-card, .ki-cat').forEach(card => {
+    if (card.querySelector('.effect-canvas')) new NeuralEffect(card);
+  });
+
+  // Respect reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.effect-canvas').forEach(c => c.style.display = 'none');
+  }
+
+
+
+  /* ═══ SCROLL REVEAL OBSERVER ═══ */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
+
+</script>
+
+</body>
+</html>

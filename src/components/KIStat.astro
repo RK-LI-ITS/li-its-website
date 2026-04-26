@@ -1,0 +1,20 @@
+---
+interface Props {
+  target?: number;
+  suffix?: string;
+  value?: string;
+  labelHtml: string;
+}
+
+const { target, suffix = '', value, labelHtml } = Astro.props;
+const isNumeric = typeof target === 'number';
+const display = value ?? (isNumeric ? `${target}${suffix}` : '');
+---
+<div class="ki-stat">
+  {isNumeric ? (
+    <div class="num" data-target={target} data-suffix={suffix}>{display}</div>
+  ) : (
+    <div class="num">{display}</div>
+  )}
+  <div class="label" set:html={labelHtml} />
+</div>

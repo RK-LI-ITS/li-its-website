@@ -1,0 +1,56 @@
+---
+import KIStat from './KIStat.astro';
+import { kiCategories } from '../data/ki-projects.js';
+---
+<section class="ki-section" id="ki">
+  <div class="container">
+    <div class="section-head scroll-reveal">
+      <div class="section-eyebrow">02 — KI-Projekte</div>
+      <h2 class="section-title">KI dort, wo sie wirkt — <span class="serif">nicht, wo sie auffällt.</span></h2>
+      <p class="section-sub">Wir setzen Künstliche Intelligenz dort ein, wo sie konkrete Geschäftsprobleme löst. Entwickelt nach ISO 27001, betrieben im eigenen Rechenzentrum. Von der lokalen KI-Inferenz bis zur hybriden Cloud-Integration.</p>
+    </div>
+    <div class="ki-stats scroll-reveal">
+      <KIStat target={80} suffix="+" labelHtml="realisierte KI-Projekte" />
+      <KIStat target={8} labelHtml="Branchen abgedeckt" />
+      <KIStat target={7} labelHtml="KI-Modelle im Einsatz" />
+    </div>
+
+    {kiCategories.map((cat, i) => (
+      <div class="ki-category-block scroll-reveal">
+        <div class="ki-category-head">
+          <span class="ki-category-num">{String(i + 1).padStart(2, '0')}</span>
+          <div class="ki-category-text">
+            <h3 class="ki-category-title">
+              {cat.title}
+              <span class="ki-category-count">{cat.projects.length} Projekte</span>
+            </h3>
+            <p class="ki-category-sub">{cat.subtitle}</p>
+          </div>
+        </div>
+        <div class="ki-projects-grid">
+          {cat.projects.map((p) => (
+            <article class="ki-project">
+              <div class="ki-project-tag">{p.tag}</div>
+              <h4 class="ki-project-title">{p.title}</h4>
+              <p class="ki-project-desc">{p.description}</p>
+              <div class="ki-project-tech">
+                {p.tech.map((t, ti) => (
+                  <>
+                    {ti > 0 && <span class="ki-project-tech-sep"> · </span>}
+                    <span class="ki-project-tech-item">{t}</span>
+                  </>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <div class="ki-cta-row scroll-reveal">
+      <p class="ki-cta-note">
+        Jedes Projekt nach den gleichen Standards entwickelt, die Ihre Regulierung verlangt.
+      </p>
+    </div>
+  </div>
+</section>

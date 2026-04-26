@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const year = new Date().getFullYear();
+---
+<BaseLayout
+  title="Impressum — L&I IT-solutions"
+  description="Impressum der L&I IT-solutions GmbH & Co. KG — Anschrift, Geschäftsführung, HRA/HRB und Datenschutzbeauftragter."
+  noindex={true}
+>
+  <Nav />
+  <main class="legal-page">
+    <div class="container">
+      <header class="legal-head">
+        <div class="section-eyebrow">Rechtliches</div>
+        <h1 class="legal-title">Impressum</h1>
+      </header>
+
+      <div class="legal-body">
+        <p class="legal-copyright">© {year} L&amp;I IT-solutions GmbH &amp; Co. KG<br>
+          Werderstr. 4, 69469 Weinheim<br>
+          HRA 712555 Amtsgericht Mannheim
+        </p>
+
+        <section class="legal-block">
+          <h2>Persönlich haftender Gesellschafter</h2>
+          <p>
+            lawyer&amp;insurer IT-solutions GmbH<br>
+            HRB 754265 Amtsgericht Mannheim<br>
+            Werderstr. 4, 69469 Weinheim, Deutschland
+          </p>
+        </section>
+
+        <section class="legal-block">
+          <h2>Vertretungsberechtigt</h2>
+          <dl class="legal-dl">
+            <dt>Geschäftsführer</dt>
+            <dd>Kai Bieler</dd>
+
+            <dt>Telefon</dt>
+            <dd><a href="tel:+4984113807690">+49 (0) 841 / 13 80 769-0</a></dd>
+
+            <dt>E-Mail</dt>
+            <dd><a href="mailto:info@li-its.de">info@li-its.de</a></dd>
+
+            <dt>Website</dt>
+            <dd><a href="https://li-its.de" target="_blank" rel="noopener">https://li-its.de</a></dd>
+
+            <dt>Steuer-ID</dt>
+            <dd>DE272228145</dd>
+          </dl>
+        </section>
+
+        <section class="legal-block">
+          <h2>Ansprechpartner für die Website</h2>
+          <p>Inhaltlich Verantwortlicher gem. § 55 RStV:</p>
+          <p>L&amp;I IT-solutions GmbH &amp; Co. KG<br>
+            Kai Bieler<br>
+            Anschrift siehe oben
+          </p>
+        </section>
+
+        <section class="legal-block">
+          <h2>Externer Datenschutzbeauftragter</h2>
+          <p>
+            Dipl.-Kfm. Günther Otten<br>
+            E-Mail: <a href="mailto:datenschutz@li-its.de">datenschutz@li-its.de</a>
+          </p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
