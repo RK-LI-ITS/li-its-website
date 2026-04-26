@@ -1,0 +1,27 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  titleAccent?: string;
+  delay?: number;
+}
+
+const { eyebrow, title, titleAccent, delay } = Astro.props;
+const delayClass = delay ? `delay-${delay}` : '';
+
+const titleParts =
+  titleAccent && title.includes(titleAccent)
+    ? {
+        before: title.slice(0, title.indexOf(titleAccent)),
+        accent: titleAccent,
+        after: title.slice(title.indexOf(titleAccent) + titleAccent.length),
+      }
+    : null;
+---
+<div class={`product-section scroll-reveal ${delayClass}`}>
+  <div class="product-section-eyebrow">{eyebrow}</div>
+  <h2 class="product-section-title">{titleParts ? (<Fragment>{titleParts.before}<span class="italic">{titleParts.accent}</span>{titleParts.after}</Fragment>) : title}</h2>
+  <div class="product-section-body">
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface PartnerLink {
+  url: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  tagline: string;
+  taglineAccent?: string;
+  intro: string;
+  eyebrow: string;
+  metaTitle?: string;
+  metaDescription: string;
+  partnerLink?: PartnerLink;
+  industries?: string[];
+  mailtoSubject?: string;
+}
+
+const {
+  title,
+  tagline,
+  taglineAccent,
+  intro,
+  eyebrow,
+  metaTitle,
+  metaDescription,
+  partnerLink,
+  industries,
+  mailtoSubject,
+} = Astro.props;
+
+const pageTitle = metaTitle ?? `${title} — L&I IT-solutions`;
+const subject = mailtoSubject ?? `Erstgespräch zu ${title}`;
+const mailto = `mailto:info@li-its.de?subject=${encodeURIComponent(subject)}`;
+
+const taglineParts =
+  taglineAccent && tagline.includes(taglineAccent)
+    ? {
+        before: tagline.slice(0, tagline.indexOf(taglineAccent)),
+        accent: taglineAccent,
+        after: tagline.slice(tagline.indexOf(taglineAccent) + taglineAccent.length),
+      }
+    : null;
+---
+<BaseLayout title={pageTitle} description={metaDescription} noindex={true}>
+  <Nav />
+  <main class="product-page">
+    <section class="product-hero">
+      <div class="container">
+        <a href="/#produkte" class="product-backlink scroll-reveal">Alle Produkte</a>
+        <div class="product-hero-eyebrow scroll-reveal">{eyebrow}</div>
+        <h1 class="product-hero-title scroll-reveal">{title}</h1>
+        <p class="product-hero-tagline scroll-reveal delay-1">{taglineParts ? (<Fragment>{taglineParts.before}<span class="italic">{taglineParts.accent}</span>{taglineParts.after}</Fragment>) : tagline}</p>
+        <p class="product-hero-intro scroll-reveal delay-2">{intro}</p>
+        {industries && industries.length > 0 && (
+          <div class="product-industries scroll-reveal delay-3">
+            <span class="product-industries-label">Eingesetzt für</span>
+            {industries.map((industry) => (
+              <span class="product-industry-chip">{industry}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <section class="product-body">
+      <div class="container">
+        <slot />
+      </div>
+    </section>
+
+    <section class="product-cta">
+      <div class="container">
+        <div class="product-cta-inner scroll-reveal">
+          <div class="product-cta-eyebrow">Nächster Schritt</div>
+          <h2>
+            Lassen Sie uns über <span class="italic">{title}</span> sprechen.
+          </h2>
+          <p>
+            In einem unverbindlichen Erstgespräch klären wir Anforderungen, Bezugsmodell und nächste Schritte — ohne Verpflichtung.
+          </p>
+          <div class="product-cta-buttons">
+            <a href={mailto} class="btn btn-green-light">Erstgespräch vereinbaren <span class="arrow">→</span></a>
+            {partnerLink && (
+              <a href={partnerLink.url} target="_blank" rel="noopener" class="btn btn-ghost">{partnerLink.label}</a>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  import '../scripts/scroll-reveal.js';
+</script>

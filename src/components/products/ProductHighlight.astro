@@ -1,0 +1,20 @@
+---
+interface Stat {
+  num: string;
+  label: string;
+}
+
+interface Props {
+  stats: Stat[];
+}
+
+const { stats } = Astro.props;
+---
+<div class="product-highlight">
+  {stats.map((stat) => (
+    <div class="product-highlight-stat">
+      <div class="product-highlight-num">{stat.num}</div>
+      <div class="product-highlight-label">{stat.label}</div>
+    </div>
+  ))}
+</div>

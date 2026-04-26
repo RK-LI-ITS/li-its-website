@@ -1,0 +1,41 @@
+---
+import ProductPageLayout from '../../layouts/ProductPageLayout.astro';
+import ProductFeatureSection from '../../components/products/ProductFeatureSection.astro';
+import ProductBulletList from '../../components/products/ProductBulletList.astro';
+---
+<ProductPageLayout
+  title="Data Agenda Datenschutzmanager"
+  eyebrow="Produkt · DSGVO-Compliance"
+  tagline="Webbasiertes Management-System für DSGVO-Rechenschaftspflichten."
+  taglineAccent="DSGVO-Rechenschaftspflichten"
+  intro="Der Datenschutzmanager bündelt alle Anforderungen an die DSGVO-Dokumentation in einer mandantenfähigen Plattform. Verfahrensverzeichnisse, technisch-organisatorische Maßnahmen, AV-Vertragsverwaltung und mehr — vollständig in Deutschland gehostet und expertengeprüft in Zusammenarbeit mit der Gesellschaft für Datenschutz und Datensicherheit (GDD e.V.)."
+  industries={["Branchenübergreifend", "DSB-Mandate", "Konzerne", "Mittelstand"]}
+  metaDescription="Data Agenda Datenschutzmanager: DSGVO-Management-System mit Verfahrensverzeichnis, TOMs und AV-Vertragsverwaltung. Mandantenfähig, GDD-geprüft, in Deutschland gehostet."
+  partnerLink={{ url: "https://dataagenda.de/datenschutzmanager/", label: "Zur offiziellen Data-Agenda-Seite →" }}
+>
+  <ProductFeatureSection eyebrow="Funktionsumfang" title="Was der Datenschutzmanager abdeckt">
+    <ProductBulletList
+      items={[
+        "Verzeichnis von Verarbeitungstätigkeiten (VVT) nach Art. 30 DSGVO",
+        "Technisch-organisatorische Maßnahmen (TOMs)",
+        "AV-Vertragsverwaltung nach Art. 28 DSGVO",
+        "Datenschutz-Folgenabschätzungen (DSFA)",
+        "Risikobewertungen und Schutzbedarfsanalysen",
+        "Auskunftsersuchen-Management",
+        "Mandantenfähig für externe Datenschutzbeauftragte und Konzernstrukturen",
+      ]}
+    />
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Expertenprüfung" title="GDD-Expertise inside">
+    <p>
+      Inhalte und Vorlagen des Datenschutzmanagers werden in enger Zusammenarbeit mit der <strong>Gesellschaft für Datenschutz und Datensicherheit (GDD e.V.)</strong> entwickelt und gepflegt — Deutschlands ältester und größter Datenschutz-Fachverband. Sie arbeiten mit Vorlagen und Methodiken, die von Praktikern und Juristen gleichermaßen geprüft sind.
+    </p>
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Infrastruktur" title="Hosting und Betrieb">
+    <p>
+      Der Datenschutzmanager wird ausschließlich in Deutschland gehostet — ISO 27001-zertifiziert, vollständig in deutscher Jurisdiktion. Mandantenfähigkeit ermöglicht die saubere Trennung mehrerer Mandanten in einer einzigen Installation, ideal für externe Datenschutzbeauftragte und Konzernstrukturen mit mehreren Tochtergesellschaften.
+    </p>
+  </ProductFeatureSection>
+</ProductPageLayout>

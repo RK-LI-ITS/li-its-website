@@ -1,0 +1,47 @@
+---
+import ProductPageLayout from '../../layouts/ProductPageLayout.astro';
+import ProductFeatureSection from '../../components/products/ProductFeatureSection.astro';
+import ProductBulletList from '../../components/products/ProductBulletList.astro';
+---
+<ProductPageLayout
+  title="CASP"
+  eyebrow="Produkt · Datenaustausch"
+  tagline="Sichere B2B-Plattform für den Datenaustausch zwischen Versicherern und ihren Partnern."
+  taglineAccent="Versicherern und ihren Partnern"
+  intro="CASP ist unsere Plattform für den hochperformanten Datenaustausch in der Versicherungsindustrie. Direkter Webservice-Anschluss oder Übertragung über das GDV-Branchennetz — mit automatischer Format-Konvertierung, höchsten Sicherheitsstandards und einem zentralen Zugangspunkt für alle Partner."
+  industries={["Versicherungen", "Rechtsschutz", "Versicherungs-Dienstleister"]}
+  metaDescription="CASP: B2B-Datenaustausch-Plattform für die Versicherungsindustrie. GDV-Netz-Anbindung, Webservices, Format-Konvertierung — ein Zugang zu allen Partnern."
+>
+  <ProductFeatureSection eyebrow="Sicherheitsanforderungen" title="Unser Fokus ist Sicherheit">
+    <p>
+      Schon aufgrund gesetzlicher Vorschriften sind Unternehmen gehalten, Datenübertragungs- und File-Transfer-Lösungen einzusetzen, die höchsten Sicherheitsanforderungen gerecht werden. CASP ist genau dafür gebaut: ISO 27001-zertifizierter Betrieb, verschlüsselte Übertragung, vollständige Audit-Logs.
+    </p>
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Anbindungsoptionen" title="Direkte Webservice-Anbindung oder GDV-Netz">
+    <p>
+      CASP unterstützt sowohl direkten hochperformanten Datenaustausch zwischen Partnern via Webservices als auch Übertragungen über das GDV-Branchennetz. Der zentrale Nutzen liegt in der Konvertierung der verschiedensten Quellformate in die jeweils benötigten Zielformate — Sie sprechen mit allen Partnern, müssen sich aber nur um eine einzige Anbindung kümmern.
+    </p>
+    <ProductBulletList
+      items={[
+        "Direkter Webservice-Anschluss zwischen Partnern",
+        "GDV-Branchennetz-Anbindung für die Versicherungswirtschaft",
+        "Automatische Konvertierung verschiedenster Quell- und Zielformate",
+        "Ein zentraler Zugangspunkt zu allen Partnern",
+        "Eliminiert den Aufwand individueller Schnittstellen je Partner",
+      ]}
+    />
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Branchen-Infrastruktur" title="GDV-Netz als Infrastruktur">
+    <p>
+      Beim GDV-Branchennetz — kurz GDV-Netz — handelt es sich um eine Infrastruktur, über die die deutsche Versicherungswirtschaft mit Dritten kommuniziert. IT-Dienstleister mit GDV-Netzanschluss können Dritten einen Zugang gewähren; CASP übernimmt für Sie die Konvertierungs- und Verteilungsfunktionen, sodass auch Partner ohne eigenen GDV-Anschluss nahtlos integriert werden können.
+    </p>
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Kundennutzen" title="Ein Zugang, alle Partner">
+    <p>
+      Unsere Kunden haben einen einzigen Zugangspunkt zur Plattform. Über diesen versenden und empfangen sie Daten von und zu allen ihren Partnern — ohne zusätzlichen Implementierungsaufwand bei der Anbindung neuer Geschäftspartner.
+    </p>
+  </ProductFeatureSection>
+</ProductPageLayout>

@@ -1,0 +1,51 @@
+---
+import ProductPageLayout from '../../layouts/ProductPageLayout.astro';
+import ProductFeatureSection from '../../components/products/ProductFeatureSection.astro';
+import ProductBulletList from '../../components/products/ProductBulletList.astro';
+import ProductHighlight from '../../components/products/ProductHighlight.astro';
+---
+<ProductPageLayout
+  title="INVOICE-Auditor"
+  eyebrow="Produkt · Rechnungsprüfung"
+  tagline="Automatisierte Prüfung von Anwalts- und Eingangsrechnungen — RVG-konform und revisionssicher."
+  taglineAccent="RVG-konform und revisionssicher"
+  intro="INVOICE-Auditor übernimmt die Prüfung, Bewertung und Kategorisierung von Anwalts- und Eingangsrechnungen vollautomatisch. OCR-gestützte Belegerfassung trifft auf ein konfigurierbares Regelwerk — bis zu 750.000 Seiten pro Jahr, von der Posteingangs-Erfassung bis zum revisionssicheren Buchungsdatensatz."
+  industries={["Versicherungen", "Anwaltskanzleien", "Rechtsschutz"]}
+  metaDescription="INVOICE-Auditor: Automatisierte Rechnungsprüfung für Anwaltsrechnungen. RVG-konform, OCR-gestützt, bis zu 750.000 Seiten pro Jahr. Inhouse oder ASP."
+>
+  <ProductFeatureSection eyebrow="Funktionsumfang" title="Was INVOICE-Auditor leistet">
+    <p>
+      INVOICE-Auditor liest eingehende Rechnungen — egal ob per Post, Fax oder E-Mail — automatisch ein, klassifiziert sie und prüft sie gegen ein individuelles Regelwerk. Die Software erstellt für jede Rechnung ein übersichtliches Prüfungsprotokoll mit Kontierungsinformationen, Abweichungen vom Regelkatalog und Hinweisen auf Optimierungspotenziale.
+    </p>
+    <ProductBulletList
+      items={[
+        "OCR-gestützte Erfassung über ABBYY FlexiCapture (Inputmanagement-Lösung)",
+        "Freiformerkennung für unstrukturierte Anwaltsrechnungen",
+        "Vollautomatische Dunkelverarbeitung für Standard-Rechnungen",
+        "Teilautomatisierte Bearbeitung mit Sachbearbeiter-Validierung für komplexe Fälle",
+        "Konfigurierbares Regelwerk nach RVG und individuellen Vorgaben",
+        "Übersichtliches Prüfungsprotokoll pro Vorgang",
+        "Schnittstelle zu gängigen Buchhaltungssystemen",
+      ]}
+    />
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Praxisbeispiel" title="Bewährt im Versicherungsalltag">
+    <p>
+      Die DEURAG Deutsche Rechtsschutz-Versicherung AG verarbeitet mit INVOICE-Auditor bis zu <strong>750.000 Rechnungsseiten pro Jahr</strong>. Etwa 25% laufen vollautomatisch in der Dunkelverarbeitung, weitere 65% werden teilautomatisiert bearbeitet — pro Woche werden so rund 1.250 Anwaltsrechnungen geprüft.
+    </p>
+    <ProductHighlight
+      stats={[
+        { num: "750.000", label: "Seiten pro Jahr verarbeitet" },
+        { num: "25%", label: "vollautomatisch (Dunkelverarbeitung)" },
+        { num: "1.250", label: "Rechnungen pro Woche" },
+      ]}
+    />
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Bezugsmodelle" title="Verfügbarkeit">
+    <p>
+      INVOICE-Auditor steht in zwei Varianten zur Verfügung: als <strong>Inhouse-Lösung</strong> mit Installation in Ihrer eigenen Infrastruktur, oder als <strong>ASP-Lösung</strong> im L&I-Rechenzentrum in München — ISO 27001-zertifiziert, vollständig in deutscher Jurisdiktion.
+    </p>
+  </ProductFeatureSection>
+</ProductPageLayout>

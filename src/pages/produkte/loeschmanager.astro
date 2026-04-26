@@ -1,0 +1,55 @@
+---
+import ProductPageLayout from '../../layouts/ProductPageLayout.astro';
+import ProductFeatureSection from '../../components/products/ProductFeatureSection.astro';
+---
+<ProductPageLayout
+  title="Löschmanager"
+  eyebrow="Produkt · DSGVO-Löschkonzept"
+  tagline="In drei Schritten zum DSGVO- und DIN 66398-konformen Löschkonzept."
+  taglineAccent="DSGVO- und DIN 66398-konformen"
+  intro="Der Löschmanager bietet eine zentrale Verwaltung des gesamten Löschkonzeptes über alle in Ihrem Verzeichnis der Verarbeitungstätigkeiten (VVT) hinterlegten Datenarten und -kategorien hinweg. Erfassung, Dokumentation und Umsetzung — automatisiert, dokumentiert, revisionssicher."
+  industries={["Branchenübergreifend", "DSB-Mandate", "Konzerne"]}
+  metaDescription="Löschmanager: Zentrale Verwaltung des Löschkonzeptes nach DSGVO und DIN 66398. Drei-Schritte-Workflow von der Erfassung bis zur Umsetzung. In Kooperation mit Datakontext."
+  partnerLink={{ url: "https://dataagenda.de/Loeschmanager/", label: "Zur offiziellen Data-Agenda-Seite →" }}
+>
+  <ProductFeatureSection eyebrow="Vorbereitung" title="Schritt 1 · Erfassung">
+    <p>
+      Bei der Erfassung werden im VVT die Datenarten und -kategorien festgehalten. Sie greifen dabei auf die bereits bestehenden Vorlagen des Löschmanagers zurück. Anhand der im System enthaltenen Löschregeln und Löschklassen erstellt der Löschmanager automatisch ein fachliches und technisches Löschkonzept in Anlehnung an DSGVO und DIN 66398. Sämtliche Kategorien sind selbstverständlich auch individualisierbar.
+    </p>
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Konzepterstellung" title="Schritt 2 · Dokumentation">
+    <p>
+      Der Löschmanager ermöglicht die vollautomatische, VVT-spezifische Zusammenstellung des Fachkonzeptes im System und stellt Ihnen für die Umsetzung in Ihrem Unternehmen eine automatisierte Übersicht über die Dokumente Ihres Löschkonzepts zur Verfügung. Die Dokumentationsstruktur entspricht der Form eines Fachkonzepts.
+    </p>
+    <p>
+      Sämtliche in VVTs festgelegten Datenkategorien werden hier gelistet, jeweils vorbelegt mit DIN 66398-konformen Löschfristen.
+    </p>
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Operative Umsetzung" title="Schritt 3 · Umsetzung">
+    <p>
+      In der Umsetzungsphase begleitet Sie der Löschmanager mit zwei Werkzeugen:
+    </p>
+    <div class="product-two-col">
+      <div class="product-col-card">
+        <h4>Löschprotokoll</h4>
+        <p>
+          Zur Dokumentation und Kontrolle der bereits durchgeführten Löscharbeiten. Die Löschvorgänge können von den verantwortlichen Mitarbeitern durch Anklicken der zu löschenden Datenarten in der Ansicht „Technik-Konzept" einfach und bequem protokolliert werden. Datenschutzbeauftragten steht diese Dokumentation als Grundlage für die Umsetzung Ihrer Überwachungsaufgaben zur Verfügung. Alle Dokumentationen sind in verschiedenen Datenformaten z.B. für Audits exportierbar.
+        </p>
+      </div>
+      <div class="product-col-card">
+        <h4>Technik-Konzept</h4>
+        <p>
+          Übersicht der noch anstehenden Löschmaßnahmen. Das System berechnet automatisch die nächsten Löschtermine anhand der zuletzt bestätigten Löschung und dem festgelegten Löschintervall. Mit der Löschliste stellen Sie dem Verantwortlichen eine übersichtliche Ansicht der aktuell noch zu löschenden Datenarten mit den jeweiligen Speicherorten sowie dem für die Löschung verantwortlichen Mitarbeiter zur Verfügung.
+        </p>
+      </div>
+    </div>
+  </ProductFeatureSection>
+
+  <ProductFeatureSection eyebrow="Vertriebspartner" title="Kooperation mit Datakontext">
+    <p>
+      Der Löschmanager wird — wie auch der Datenschutzmanager — in Kooperation mit dem Datakontext Verlag vertrieben, einem etablierten Fachverlag und Schulungspartner für Datenschutz-Profis.
+    </p>
+  </ProductFeatureSection>
+</ProductPageLayout>
